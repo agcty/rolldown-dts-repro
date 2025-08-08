@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "rootDir": "src",
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "tsBuildInfoFile": ".tsbuildinfo/react.tsbuildinfo",
+    "isolatedDeclarations": false
+  },
+  "include": ["src/react"],
+  "references": [{ "path": "./tsconfig.shared.json" }]
+}
