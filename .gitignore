@@ -1,5 +1,6 @@
 # Ignore repository-level Node modules
 /node_modules/
+node_modules
 
 # Common build artifacts (optional)
 dist/

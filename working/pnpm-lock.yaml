@@ -23,7 +23,7 @@ importers:
 
   package-b:
     devDependencies:
-      '@repro/package-a':
+      '@working-repro/package-a':
         specifier: workspace:*
         version: link:../package-a
       tsdown:

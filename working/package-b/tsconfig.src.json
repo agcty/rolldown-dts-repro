@@ -4,7 +4,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "baseUrl": ".",
-    "outDir": "build/react",
+    "outDir": "dist",
     "rootDir": "src",
     "module": "ESNext",
     "target": "ESNext",
@@ -12,6 +12,5 @@
     "skipLibCheck": true,
     "isolatedDeclarations": false
   },
-  "include": ["src/react"],
-  "references": [{ "path": "./tsconfig.shared.json" }]
+  "include": ["src"]
 }

@@ -4,6 +4,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "baseUrl": ".",
+    // important: set to dist
     "outDir": "dist",
     "rootDir": "src",
     "module": "ESNext",

@@ -4,6 +4,7 @@
     "composite": true,
     "declaration": true,
     "emitDeclarationOnly": true,
+    // important: set to dist
     "outDir": "dist",
     "rootDir": "src",
     "module": "ESNext",
