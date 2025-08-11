@@ -1,11 +1,11 @@
-import { defineConfig } from "tsdown"
+import { defineConfig } from "tsdown";
 
 export default [
   defineConfig({
     entry: { "react/index": "src/react/index.ts" },
     format: ["esm"],
     outDir: "dist",
-    dts: { sourcemap: true },
+    dts: { sourcemap: true, build: true },
     sourcemap: true,
     clean: true,
     tsconfig: "tsconfig.react.json",
@@ -18,7 +18,7 @@ export default [
     entry: { "server/index": "src/server/index.ts" },
     format: ["esm"],
     outDir: "dist",
-    dts: { sourcemap: true },
+    dts: { sourcemap: true, build: true },
     sourcemap: true,
     clean: true,
     tsconfig: "tsconfig.server.json",
@@ -27,4 +27,4 @@ export default [
     treeshake: true,
     minify: false,
   }),
-]
+];

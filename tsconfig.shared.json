@@ -10,6 +10,7 @@
     "target": "ESNext",
     "moduleResolution": "Bundler",
     "skipLibCheck": true,
-    "isolatedDeclarations": false
+    "isolatedDeclarations": false,
+    "tsBuildInfoFile": ".tsbuildinfo/shared.tsbuildinfo"
   }
 }
