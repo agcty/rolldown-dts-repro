@@ -1,4 +1,20 @@
+# Ignore repository-level Node modules
+/node_modules/
 node_modules
+
+# Common build artifacts (optional)
 dist/
+build/
+
+# TypeScript
 .tsbuildinfo/
 *.tsbuildinfo
+
+# macOS
+.DS_Store
+
+# Turbo repo cache (if used)
+.turbo/
+
+
+

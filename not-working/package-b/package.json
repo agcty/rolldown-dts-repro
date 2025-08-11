@@ -1,0 +1,24 @@
+{
+  "name": "@not-working-repro/package-b",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc -b",
+    "dev": "tsdown --watch ./src"
+  },
+  "devDependencies": {
+    "@not-working-repro/package-a": "workspace:*",
+    "tsdown": "0.13.4",
+    "typescript": "5.9.2"
+  }
+}

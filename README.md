@@ -1,53 +1,79 @@
-# rolldown-plugin-dts tsBuildInfoFile repro
+<!-- markdownlint-disable MD041 -->
 
-This is a minimal, self-contained reproduction of a rolldown-plugin-dts failure when custom `tsBuildInfoFile` paths are used across a small project-references setup.
+## Go-to Definition broken with DTS sourcemaps when using custom tsconfig
 
-The original project-references error ("Unable to load file … from the program") has been addressed per the discussion in [sxzz/rolldown-plugin-dts#80](https://github.com/sxzz/rolldown-plugin-dts/issues/80). The remaining issue is specifically about custom `.tsbuildinfo` paths.
+When generating typings with `rolldown-plugin-dts` via `tsdown`, IDE Go to Definition (e.g. VSCode) can jump to generated `.d.ts` files instead of the original `.ts` source if `tsdown` is configured with a custom `tsconfig` (e.g. per-target configs, project references, or path aliases).
 
-## Layout
+This repo contains two minimal examples that differ only by the `tsdown` `tsconfig` setting:
 
-- `src/types.ts` — shared type
-- `src/react/index.ts` — re-exports `Toast` from `../types`
-- `src/server/index.ts` — re-exports `Toast` from `../types`
-- `tsconfig.shared.json` — references only `src/types.ts` via `files`, sets a custom `tsBuildInfoFile`
-- `tsconfig.react.json` + `tsconfig.server.json` — each references `tsconfig.shared.json`, both set custom `tsBuildInfoFile`
-- `tsdown.config.ts` — two entries (react + server), each with its own tsconfig
+- `working/` uses `tsconfig: false` and IDE navigation works
+- `not-working/` uses `tsconfig: "tsconfig.*.json"` and IDE navigation jumps to bundled `.d.ts`
 
-## Repro (custom tsBuildInfoFile paths)
+### What’s wrong
 
-1. Remove any existing build info files
+In the broken case, the generated `index.d.ts.map` lists `.d.ts` files as its sources, not the original `.ts` files. That prevents editors from tracing the declaration back to the source.
 
-```sh
-rm -rf .tsbuildinfo dist
-find . -name '*.tsbuildinfo' -delete
+Example from `not-working/package-a/dist/react/index.d.ts.map`:
+
+```json
+{
+  "version": 3,
+  "file": "index.d.ts",
+  "names": ["Toast", "sharedValue", "Toast", "testValue"],
+  "sources": ["../../src/types.d.ts", "../../src/react/index.d.ts"],
+  "sourcesContent": [
+    "export type Toast = {\n    title: string;\n    description?: string;\n    duration?: number;\n    type: \"info\" | \"success\" | \"error\" | \"warning\";\n    notificationId?: string;\n};\nexport declare const sharedValue = 1;\n",
+    "export type { Toast } from \"../types\";\nexport declare const testValue = 1;\n"
+  ],
+  "mappings": "..."
+}
 ```
 
-2. First build works
+In the working case, the sourcemap points at the real `.ts` sources:
 
-```sh
-pnpm build
+```json
+{
+  "version": 3,
+  "file": "index.d.ts",
+  "names": [],
+  "sources": ["../../src/types.ts", "../../src/react/index.ts"],
+  "sourcesContent": [],
+  "mappings": "..."
+}
 ```
 
-3. Second build fails
+### Why it happens (observed)
 
-```sh
-pnpm build
+Providing a custom `tsconfig` causes the DTS build to resolve through intermediate `.d.ts` outputs for referenced projects/entries. The sourcemap emitted by the plugin then records those `.d.ts` files in `sources`, instead of walking back to the original `.ts` files. Editors rely on these `sources` to power Go to Definition, so navigation ends up at generated declarations rather than source.
+
+Related discussion: “Unable to load file … from the program” when using TS project references for shared types. While that issue started from a different symptom, it points to the same root cause: the TypeScript program used by the plugin lacks the referenced source files and falls back to `.d.ts` artifacts. See [rolldown-plugin-dts issue #80](https://github.com/sxzz/rolldown-plugin-dts/issues/80).
+
+### Repro in this repo
+
+- Open the workspace in an editor that supports Go to Definition (e.g. VSCode)
+- Compare navigation from `working/package-b/src/index.ts` versus `not-working/package-b/src/index.ts` to the `Toast` type defined in `package-a/src/types.ts`
+  - In `working/`, navigation reaches the `.ts` source
+  - In `not-working/`, navigation targets the bundled/generated `.d.ts` and does not reach the `.ts` source
+
+### Config difference that triggers the issue
+
+`not-working/package-a/tsdown.config.ts` (custom `tsconfig` enabled):
+
+```ts
+// react build
+tsconfig: "tsconfig.react.json";
+// server build
+tsconfig: "tsconfig.server.json";
 ```
 
-## Expected
+`working/package-a/tsdown.config.ts` (uses default TS compiler options, no project `tsconfig`):
 
-- Repeated builds succeed when `tsBuildInfoFile` is set to custom paths in all participating `tsconfig*.json` files.
+```ts
+tsconfig: false;
+```
 
-## Actual
+### Workarounds tried
 
-- The first build succeeds, but a subsequent build fails when custom `tsBuildInfoFile` paths are present.
-
-## Workaround
-
-- Comment out or remove all `tsBuildInfoFile` entries from `tsconfig.react.json`, `tsconfig.server.json`, and `tsconfig.shared.json`.
-- After removing these options, `pnpm build` can be run repeatedly and continues to succeed.
-
-## Notes
-
-- `.gitignore` already ignores both the `.tsbuildinfo/` directory and `*.tsbuildinfo` files.
-- This repository is meant to demonstrate the behavior for investigation and tracking.
+- **Disable custom tsconfig**: `tsconfig: false` fixes the mapping but removes support for path aliases and project references that many packages need.
+- **Manually include shared files in leaf configs**: did not resolve the mapping to `.ts` sources.
+- **Duplicate shared types per entry**: sidesteps the problem but defeats project references and increases maintenance cost.

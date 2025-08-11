@@ -1,5 +1,5 @@
 {
-  "name": "@oddlynew/rolldown-dts-repro",
+  "name": "@not-working-repro/package-a",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -17,7 +17,8 @@
   "files": ["dist"],
   "scripts": {
     "build": "tsdown",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "dev": "tsdown --watch ./src"
   },
   "devDependencies": {
     "tsdown": "0.13.4",
