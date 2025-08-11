@@ -1,26 +1,16 @@
 {
-  "name": "@oddlynew/rolldown-dts-repro",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "sideEffects": false,
-  "exports": {
-    "./react": {
-      "types": "./dist/react/index.d.ts",
-      "default": "./dist/react/index.js"
-    },
-    "./server": {
-      "types": "./dist/server/index.d.ts",
-      "default": "./dist/server/index.js"
-    }
-  },
-  "files": ["dist"],
+  "name": "monorepo-tsdown-repro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "tsdown",
-    "typecheck": "tsc -b"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-    "tsdown": "0.13.4",
-    "typescript": "5.9.2"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.13.1",
+  "dependencies": {
+    "turbo": "^2.5.5"
   }
 }
