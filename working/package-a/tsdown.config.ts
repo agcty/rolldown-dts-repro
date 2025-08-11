@@ -8,7 +8,7 @@ export default [
     dts: { sourcemap: true, build: true },
     sourcemap: true,
     clean: true,
-    // set to false
+    // tsconfig: "tsconfig.react.json",
     tsconfig: false,
     target: "esnext",
     platform: "browser",
@@ -22,7 +22,7 @@ export default [
     dts: { sourcemap: true, build: true },
     sourcemap: true,
     clean: true,
-    // set to false
+    // tsconfig: "tsconfig.server.json",
     tsconfig: false,
     target: "esnext",
     platform: "node",

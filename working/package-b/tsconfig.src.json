@@ -4,7 +4,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "baseUrl": ".",
-    "outDir": "dist",
+    "outDir": "build/src",
     "rootDir": "src",
     "module": "ESNext",
     "target": "ESNext",

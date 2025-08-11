@@ -5,3 +5,5 @@ export type Toast = {
   type: "info" | "success" | "error" | "warning"
   notificationId?: string
 }
+
+export const sharedValue = 1;

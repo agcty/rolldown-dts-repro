@@ -1,2 +1,3 @@
+import { sharedValue } from "../types";
 export type { Toast } from "../types"
-export const testValue = 1;
+export const testValue = sharedValue;
