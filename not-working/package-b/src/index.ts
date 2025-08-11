@@ -1,4 +1,4 @@
-// Go to definitions work here
-import { testValue } from "@working-repro/package-a/react";
+// Go to definitions DO NOT work here
+import { testValue } from "@not-working-repro/package-a/react";
 
 export const otherTestValue = testValue;

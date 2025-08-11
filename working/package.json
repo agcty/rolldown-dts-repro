@@ -1,9 +1,10 @@
 {
-  "name": "monorepo-tsdown-repro",
+  "name": "monorepo-tsdown-repro-working",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "turbo build",
     "dev": "turbo dev"
   },
   "keywords": [],
