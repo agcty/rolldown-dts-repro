@@ -4,13 +4,14 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "baseUrl": ".",
-    "outDir": "build/react",
+    "outDir": "dist",
     "rootDir": "src",
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "Bundler",
     "skipLibCheck": true,
-    "isolatedDeclarations": false
+    "isolatedDeclarations": false,
+    "tsBuildInfoFile": "./tsbuildinfo/react.tsbuildinfo"
   },
   "include": ["src/react"],
   "references": [{ "path": "./tsconfig.shared.json" }]

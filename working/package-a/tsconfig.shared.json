@@ -4,12 +4,13 @@
     "composite": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "build/shared",
+    "outDir": "dist",
     "rootDir": "src",
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "Bundler",
     "skipLibCheck": true,
-    "isolatedDeclarations": false
+    "isolatedDeclarations": false,
+    "tsBuildInfoFile": "./tsbuildinfo/shared.tsbuildinfo"
   }
 }
